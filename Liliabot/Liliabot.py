@@ -7,12 +7,14 @@ import JukeBox as juke
 
 #TODO:
 #Fix process permissions to work on raspberry pi
+
+#Integrate me by copying https://discordapp.com/oauth2/authorize?&client_id=168310783900385280&scope=bot&permissions=0 into your browser!
 ready = False
 now = date.datetime.now()
 client = ds.Client()
 schedule = []
 subscribers = []
-#jukebox = juke.JukeBox(client)
+jukebox = juke.JukeBox(client)
 timeRE = r'^([0-9]|0[0-9]|1?[0-9]|2[0-3]):[0-5]?[0-9]$'
 dateRE = r'^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$'
 with open('Schedule') as f:
@@ -23,8 +25,8 @@ with open('Schedule') as f:
         schedule.append((segment[0], segment[1], segment[2])) 
 
 #opus.dll for windows, libopus.so for linux
-#if not ds.opus.is_loaded():
-    #ds.opus.load_opus('D:\Personal projects\Python\LiliaBot\LiliaBot\Liliabot\opus.dll')
+if not ds.opus.is_loaded():
+    ds.opus.load_opus('D:\Personal projects\Python\LiliaBot\LiliaBot\Liliabot\opus.dll')
 print(ds.opus.is_loaded())
 
 
@@ -34,13 +36,13 @@ async def on_ready():
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
-    print(client.user.avatar)
-    subscriberIds = []
+    print(client.user.avatar)    
+    print (client.token);
     with open('Subscribers') as f:
         content = f.readlines()
         content = [x.strip('\n') for x in content]
         for line in content:
-            subscribers.append(client.get_channel(line))              
+            subscribers.append(client.get_channel(line))    
     print('------')        
     while(True):               
         now = date.datetime.now()
@@ -217,4 +219,5 @@ async def DisconnectVoice(source):
         await client.send_message(source, "Disconnecting from voice now.. come listen to me soon, please?")
         await client.voice.disconnect()
 
-client.run('LiliaBloomheart@gmail.com', 'Lifeblossom345')
+token = "MTY4MzEwODIxMjUwNjYyNDAw.CepvKg.6Nw2Rkj7D8YF7QLnnhzlCRJ6Ayw"
+client.run(token);
